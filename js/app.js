@@ -2,6 +2,7 @@ App = Ember.Application.create();
 
 App.Router.map(function() {
   // put your routes here
+  this.resource('book', { path: '/books/:book_id' });
 });
 
 App.IndexRoute = Ember.Route.extend({
