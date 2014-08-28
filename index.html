@@ -19,14 +19,15 @@
     <ol class='breadcrumb'>
       <li class='active'>Books</a>
     </ol>
-
     <ul class="list-unstyled"> 
-    {{#each}}
-      
-      {{book-details book=this tag='li' class='row'}}
-
-    {{/each}}
+      {{render 'books' this}}
     </ul>
+  </script>
+
+  <script type='text/x-handlebars' data-template-name="books">
+    {{#each}}
+      {{book-details book=this tag='li' class='row'}}
+    {{/each}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="book">
@@ -55,6 +56,8 @@
       <div>
         <p>{{book.review}}</p>
       </div>
+
+      <span class='label label-primary'>{{book.genre.name}}</span>
     </div>
    
   </script>
