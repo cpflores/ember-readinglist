@@ -4,6 +4,9 @@ App.Router.map(function() {
   // put your routes here
   this.resource('book', { path: '/books/:book_id' });
   this.resource('genre', { path: '/genres/:genre_id' });
+  this.resource('reviews', function() {
+  	this.route('new');
+  });
 });
 
 App.IndexRoute = Ember.Route.extend({
@@ -29,8 +32,24 @@ App.GenresController = Ember.ArrayController.extend({
 	sortProperties: ['name']
 });
 
-App.ApplicationAdapter = DS.FixtureAdapter.extend({
+App.ReviewsNewRoute = Ember.Route.extend({
+	model: function() {
+		return this.store.createRecord('book');
+	}
+});
 
+App.ReviewsNewController = Ember.Controller.extend({
+	actions: {
+		createReview: function() {
+			var controller = this;
+			this.get('model').save().then(function() {
+				controller.transitionToRoute('index');
+			});
+		}
+	}
+});
+
+App.ApplicationAdapter = DS.FixtureAdapter.extend({
 });
 
 App.BookDetailsComponent = Ember.Component.extend({
