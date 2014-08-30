@@ -34,11 +34,30 @@ App.GenresController = Ember.ArrayController.extend({
 
 App.ReviewsNewRoute = Ember.Route.extend({
 	model: function() {
-		return this.store.createRecord('book');
-	}
+    return Ember.RSVP.hash({
+    	book: this.store.findAll('book'),
+    	genres: this.store.findAll('genre')
+    });
+  },
+  setupController: function(controller, model) {
+  	controller.set('model', model.book);
+  	controller.set('genres', model.genres);
+  }
+  actions: {
+  	willTransition: function(transition) {
+  		if(this.currentModel.book.get('isNew')) {
+  			if(confirm("Are you sure you want to abandon progress?")) {
+  				this.currentModel.book.destroyRecord();
+  			} else {
+  				transition.abort();
+  			}
+  		}
+  	}
+  }
 });
 
 App.ReviewsNewController = Ember.Controller.extend({
+	ratings: [5,4,3,2,1],
 	actions: {
 		createReview: function() {
 			var controller = this;
